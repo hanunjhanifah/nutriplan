@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriPlan - Kalkulator Nutrisi & Manajemen Diet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-light: #C8E6C9;
+            --primary-dark: #388E3C;
+            --secondary: #2196F3;
+            --secondary-light: #BBDEFB;
+            --accent: #FF9800;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --danger: #dc3545;
+            --success: #28a745;
+            --warning: #ffc107;
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px 0;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--light);
+            font-weight: 300;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 30px;
+            transition: var(--transition);
+        }
+        
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--light-gray);
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 10px;
+            box-shadow: var(--shadow);
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray);
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            margin-bottom: 25px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+        }
+        
+        .card-title i {
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #1976D2;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background-color: #F57C00;
+        }
+        
+        /* Kalkulator Styles */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .results {
+            display: none;
+        }
+        
+        .results.active {
+            display: block;
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .result-card {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .result-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 10px 0;
+        }
+        
+        .result-label {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .nutrient-details {
+            margin-top: 25px;
+        }
+        
+        .nutrient-section {
+            margin-bottom: 20px;
+        }
+        
+        .nutrient-section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nutrient-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .nutrient-name {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nutrient-value {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        
+        .progress-container {
+            margin-top: 5px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .mineral-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .mineral-item {
+            background: var(--light);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .mineral-name {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+        
+        .mineral-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        /* Rencana Makan Styles */
+        .meal-plan-customized {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .customized-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .calorie-adjustment {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .calorie-adjustment select {
+            padding: 8px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+        }
+        
+        .meal-plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .meal-time-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .meal-time-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .meal-time-title {
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .meal-time-calories {
+            color: var(--primary-dark);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .meal-items {
+            list-style: none;
+        }
+        
+        .meal-items li {
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--light-gray);
+        }
+        
+        .meal-items li:last-child {
+            border-bottom: none;
+        }
+        
+        .nutrient-info {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+        
+        /* Resep Styles */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .recipe-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        
+        .recipe-img {
+            height: 180px;
+            background: linear-gradient(45deg, #ffd194, #70e1f5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .recipe-content {
+            padding: 20px;
+        }
+        
+        .recipe-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-size: 1.2rem;
+        }
+        
+        .recipe-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .recipe-calories {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        
+        .recipe-description {
+            margin-bottom: 15px;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+        
+        .recipe-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .tag {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            max-width: 800px;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .recipe-detail-header {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .recipe-detail-img {
+            flex: 1;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: linear-gradient(45deg, #ffd194, #70e1f5);
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .recipe-detail-info {
+            flex: 1;
+        }
+        
+        .recipe-detail-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+        
+        .recipe-detail-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .recipe-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+        }
+        
+        .recipe-detail-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .recipe-section {
+            background: var(--light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .ingredients-list, .instructions-list {
+            list-style: none;
+        }
+        
+        .ingredients-list li {
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .ingredients-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .instructions-list li {
+            padding: 10px 0 10px 40px;
+            border-bottom: 1px dashed var(--light-gray);
+            position: relative;
+            counter-increment: step-counter;
+        }
+        
+        .instructions-list li:before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 10px;
+            background: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .instructions-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .recipe-tips {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--primary-light);
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calorie-adjustment {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .recipe-detail-header {
+                flex-direction: column;
+            }
+            
+            .recipe-detail-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                margin: 20px;
+                padding: 20px;
+            }
+            
+            .mineral-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .meal-plan-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .recipe-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-apple-alt"></i>
+                    <div>
+                        <h1>Nutri<span>Plan</span></h1>
+                        <p>Kalkulator Nutrisi & Manajemen Diet</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">Beranda</a></li>
+                        <li><a href="#">Kalkulator</a></li>
+                        <li><a href="#">Resep</a></li>
+                        <li><a href="#">Log Makanan</a></li>
+                        <li><a href="#">Tentang</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="calculator">Kalkulator Nutrisi</div>
+            <div class="tab" data-tab="meal-plan">Rencana Makan</div>
+            <div class="tab" data-tab="recipes">Resep Sehat</div>
+        </div>
+        
+        <div class="tab-content active" id="calculator">
+            <div class="calculator-grid">
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-calculator"></i>
+                        <h2>Data Diri & Aktivitas</h2>
+                    </div>
+                    <form id="nutritionForm">
+                        <div class="form-group">
+                            <label for="gender">Jenis Kelamin</label>
+                            <select id="gender" required>
+                                <option value="">Pilih Jenis Kelamin</option>
+                                <option value="male">Laki-laki</option>
+                                <option value="female">Perempuan</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="age">Usia (tahun)</label>
+                            <input type="number" id="age" min="1" max="120" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="weight">Berat Badan (kg)</label>
+                            <input type="number" id="weight" min="1" max="300" step="0.1" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="height">Tinggi Badan (cm)</label>
+                            <input type="number" id="height" min="50" max="250" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="activity">Tingkat Aktivitas</label>
+                            <select id="activity" required>
+                                <option value="">Pilih Tingkat Aktivitas</option>
+                                <option value="1.2">Sedentary (jarang berolahraga)</option>
+                                <option value="1.375">Ringan (olahraga ringan 1-3 hari/minggu)</option>
+                                <option value="1.55">Sedang (olahraga sedang 3-5 hari/minggu)</option>
+                                <option value="1.725">Berat (olahraga berat 6-7 hari/minggu)</option>
+                                <option value="1.9">Sangat Berat (atlet profesional)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="goal">Tujuan Diet</label>
+                            <select id="goal" required>
+                                <option value="maintain">Pertahankan Berat Badan</option>
+                                <option value="loss">Menurunkan Berat Badan</option>
+                                <option value="gain">Menambah Berat Badan</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-block">Hitung Kebutuhan Nutrisi</button>
+                    </form>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <i class="fas fa-chart-pie"></i>
+                        <h2>Hasil Perhitungan</h2>
+                    </div>
+                    
+                    <div class="results" id="results">
+                        <div class="result-grid">
+                            <div class="result-card">
+                                <div class="result-label">BMR (Basal Metabolic Rate)</div>
+                                <div class="result-value" id="bmrResult">0</div>
+                                <div class="result-label">kalori/hari</div>
+                            </div>
+                            
+                            <div class="result-card">
+                                <div class="result-label">TDEE (Total Daily Energy Expenditure)</div>
+                                <div class="result-value" id="tdeeResult">0</div>
+                                <div class="result-label">kalori/hari</div>
+                            </div>
+                        </div>
+                        
+                        <div class="nutrient-details">
+                            <div class="nutrient-section">
+                                <h3 class="nutrient-section-title">
+                                    <i class="fas fa-fire"></i>
+                                    Kebutuhan Makronutrien Harian
+                                </h3>
+                                
+                                <div class="nutrient-item">
+                                    <span class="nutrient-name"><i class="fas fa-bread-slice"></i> Karbohidrat</span>
+                                    <span class="nutrient-value" id="carbsResult">0 g</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar">
+                                        <div class="progress" id="carbsProgress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="nutrient-item">
+                                    <span class="nutrient-name"><i class="fas fa-drumstick-bite"></i> Protein</span>
+                                    <span class="nutrient-value" id="proteinResult">0 g</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar">
+                                        <div class="progress" id="proteinProgress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="nutrient-item">
+                                    <span class="nutrient-name"><i class="fas fa-oil-can"></i> Lemak</span>
+                                    <span class="nutrient-value" id="fatResult">0 g</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar">
+                                        <div class="progress" id="fatProgress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="nutrient-item">
+                                    <span class="nutrient-name"><i class="fas fa-seedling"></i> Serat</span>
+                                    <span class="nutrient-value" id="fiberResult">0 g</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar">
+                                        <div class="progress" id="fiberProgress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="nutrient-section">
+                                <h3 class="nutrient-section-title">
+                                    <i class="fas fa-flask"></i>
+                                    Kebutuhan Mineral Harian
+                                </h3>
+                                
+                                <div class="mineral-grid">
+                                    <div class="mineral-item">
+                                        <div class="mineral-name">Kalsium</div>
+                                        <div class="mineral-value" id="calciumResult">0 mg</div>
+                                    </div>
+                                    <div class="mineral-item">
+                                        <div class="mineral-name">Zat Besi</div>
+                                        <div class="mineral-value" id="ironResult">0 mg</div>
+                                    </div>
+                                    <div class="mineral-item">
+                                        <div class="mineral-name">Magnesium</div>
+                                        <div class="mineral-value" id="magnesiumResult">0 mg</div>
+                                    </div>
+                                    <div class="mineral-item">
+                                        <div class="mineral-name">Kalium</div>
+                                        <div class="mineral-value" id="potassiumResult">0 mg</div>
+                                    </div>
+                                    <div class="mineral-item">
+                                        <div class="mineral-name">Seng</div>
+                                        <div class="mineral-value" id="zincResult">0 mg</div>
+                                    </div>
+                                    <div class="mineral-item">
+                                        <div class="mineral-name">Natrium</div>
+                                        <div class="mineral-value" id="sodiumResult">0 mg</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="initialMessage">
+                        <p>Masukkan data diri dan tujuan diet Anda untuk melihat perhitungan kebutuhan nutrisi harian.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="meal-plan">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h2>Rencana Makan Harian</h2>
+                </div>
+                
+                <div class="meal-plan-customized">
+                    <h3 class="customized-title">
+                        <i class="fas fa-magic"></i>
+                        Rencana Makan yang Disesuaikan
+                    </h3>
+                    <p>Rencana makan berikut disesuaikan dengan kebutuhan kalori harian Anda:</p>
+                    <div class="calorie-adjustment">
+                        <span>Target Kalori:</span>
+                        <select id="calorieTargetSelect">
+                            <option value="1200">1200 kalori</option>
+                            <option value="1500">1500 kalori</option>
+                            <option value="1800">1800 kalori</option>
+                            <option value="2000" selected>2000 kalori</option>
+                            <option value="2200">2200 kalori</option>
+                            <option value="2500">2500 kalori</option>
+                        </select>
+                        <button class="btn btn-secondary" id="updateMealPlanBtn">
+                            <i class="fas fa-sync"></i> Perbarui Rencana
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="meal-plan-grid" id="customMealPlan">
+                    <!-- Rencana makan akan diisi oleh JavaScript -->
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn btn-accent">
+                        <i class="fas fa-print"></i> Cetak Rencana
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-save"></i> Simpan Rencana
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="recipes">
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-utensils"></i>
+                    <h2>Resep Sehat Khas Indonesia</h2>
+                </div>
+                <p>Temukan resep-resep sehat dan lezat yang sesuai dengan kebutuhan nutrisi Anda.</p>
+                
+                <div class="recipe-grid" id="recipeGrid">
+                    <!-- Resep akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Detail Resep -->
+        <div class="modal" id="recipeModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeRecipeModal">&times;</span>
+                <div id="recipeDetailContent">
+                    <!-- Konten detail resep akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data resep makanan Indonesia
+        const recipeDatabase = [
+            {
+                id: 1,
+                name: "Nasi Goreng Sehat",
+                description: "Nasi goreng dengan tambahan sayuran dan protein tanpa MSG, cocok untuk sarapan atau makan siang.",
+                calories: 380,
+                carbs: 55,
+                protein: 18,
+                fat: 12,
+                fiber: 8,
+                cookTime: 25,
+                servings: 2,
+                category: "sarapan",
+                difficulty: "mudah",
+                ingredients: [
+                    { name: "Nasi merah", amount: "200", unit: "g" },
+                    { name: "Dada ayam fillet", amount: "100", unit: "g" },
+                    { name: "Telur", amount: "1", unit: "butir" },
+                    { name: "Wortel", amount: "50", unit: "g" },
+                    { name: "Buncis", amount: "50", unit: "g" },
+                    { name: "Bawang putih", amount: "2", unit: "siung" },
+                    { name: "Bawang merah", amount: "3", unit: "butir" },
+                    { name: "Kecap manis rendah gula", amount: "1", unit: "sdm" },
+                    { name: "Minyak zaitun", amount: "1", unit: "sdm" }
+                ],
+                instructions: [
+                    "Potong dadu dada ayam fillet, iris tipis wortel dan buncis.",
+                    "Haluskan bawang putih dan bawang merah.",
+                    "Panaskan minyak zaitun, tumis bumbu halus hingga harum.",
+                    "Masukkan ayam, masak hingga berubah warna.",
+                    "Tambahkan wortel dan buncis, masak hingga setengah matang.",
+                    "Masukkan nasi merah, aduk rata.",
+                    "Buat lubang di tengah wajan, masukkan telur dan orak-arik.",
+                    "Campur telur dengan nasi, tambahkan kecap manis.",
+                    "Aduk rata dan masak hingga matang sempurna.",
+                    "Sajikan hangat dengan irisan timun dan tomat."
+                ],
+                tips: "Gunakan nasi yang sudah dingin agar tidak lengket saat digoreng."
+            },
+            {
+                id: 2,
+                name: "Gado-Gado Lengkap",
+                description: "Salad khas Indonesia dengan sayuran segar, telur, dan bumbu kacang yang gurih dan sehat.",
+                calories: 320,
+                carbs: 35,
+                protein: 15,
+                fat: 14,
+                fiber: 12,
+                cookTime: 30,
+                servings: 4,
+                category: "makan siang",
+                difficulty: "sedang",
+                ingredients: [
+                    { name: "Kangkung", amount: "100", unit: "g" },
+                    { name: "Tauge", amount: "100", unit: "g" },
+                    { name: "Wortel", amount: "1", unit: "buah" },
+                    { name: "Buncis", amount: "100", unit: "g" },
+                    { name: "Kol", amount: "100", unit: "g" },
+                    { name: "Telur rebus", amount: "2", unit: "butir" },
+                    { name: "Tahu", amount: "2", unit: "potong" },
+                    { name: "Tempe", amount: "2", unit: "potong" },
+                    { name: "Kacang tanah sangrai", amount: "100", unit: "g" },
+                    { name: "Bawang putih", amount: "2", unit: "siung" },
+                    { name: "Cabai merah", amount: "2", unit: "buah" }
+                ],
+                instructions: [
+                    "Rebus semua sayuran secara terpisah hingga matang tapi masih renyah.",
+                    "Goreng tahu dan tempe setengah matang.",
+                    "Untuk bumbu kacang: haluskan kacang tanah, bawang putih, dan cabai.",
+                    "Tumis bumbu halus hingga harum.",
+                    "Tambahkan gula merah, garam, dan air asam jawa.",
+                    "Tuang air sedikit demi sedikit sambil diaduk hingga saus mengental.",
+                    "Susun sayuran rebus, tahu, tempe, dan telur di piring.",
+                    "Siram dengan saus kacang dan sajikan."
+                ],
+                tips: "Jangan merebus sayuran terlalu lama agar nutrisinya tetap terjaga."
+            },
+            {
+                id: 3,
+                name: "Ikan Bakar Bumbu Kuning",
+                description: "Ikan segar dibumbui rempah kuning dan dibakar, kaya protein dan omega-3.",
+                calories: 280,
+                carbs: 8,
+                protein: 35,
+                fat: 12,
+                fiber: 3,
+                cookTime: 40,
+                servings: 2,
+                category: "makan malam",
+                difficulty: "mudah",
+                ingredients: [
+                    { name: "Ikan kembung", amount: "2", unit: "ekor" },
+                    { name: "Kunyit", amount: "2", unit: "cm" },
+                    { name: "Jahe", amount: "1", unit: "cm" },
+                    { name: "Bawang putih", amount: "3", unit: "siung" },
+                    { name: "Bawang merah", amount: "5", unit: "butir" },
+                    { name: "Kemiri", amount: "2", unit: "butir" },
+                    { name: "Serai", amount: "1", unit: "batang" },
+                    { name: "Daun jeruk", amount: "2", unit: "lembar" }
+                ],
+                instructions: [
+                    "Bersihkan ikan, beri garam dan air jeruk nipis, diamkan 15 menit.",
+                    "Haluskan kunyit, jahe, bawang putih, bawang merah, dan kemiri.",
+                    "Tumis bumbu halus dengan serai dan daun jeruk hingga harum.",
+                    "Lumuri ikan dengan bumbu yang sudah ditumis.",
+                    "Panaskan panggangan, olesi dengan minyak zaitun.",
+                    "Bakar ikan hingga matang kedua sisinya.",
+                    "Sajikan dengan nasi merah dan sambal terasi."
+                ],
+                tips: "Bakar ikan dengan api sedang agar matang sempurna tanpa gosong."
+            }
+        ];
+
+        // Data rencana makan berdasarkan kalori
+        const mealPlans = {
+            1200: {
+                sarapan: { name: "Oatmeal Pisang", calories: 280, carbs: 45, protein: 10, fat: 6, fiber: 8 },
+                snackPagi: { name: "Apel", calories: 95, carbs: 25, protein: 0.5, fat: 0.3, fiber: 4 },
+                makanSiang: { name: "Nasi Merah + Ikan Bakar + Sayur Asem", calories: 380, carbs: 50, protein: 25, fat: 8, fiber: 10 },
+                snackSore: { name: "Yogurt Plain", calories: 120, carbs: 8, protein: 8, fat: 4, fiber: 0 },
+                makanMalam: { name: "Capcay Seafood", calories: 325, carbs: 30, protein: 25, fat: 12, fiber: 8 }
+            },
+            1500: {
+                sarapan: { name: "Nasi Goreng Sehat", calories: 380, carbs: 55, protein: 18, fat: 12, fiber: 8 },
+                snackPagi: { name: "Pisang", calories: 105, carbs: 27, protein: 1.3, fat: 0.4, fiber: 3 },
+                makanSiang: { name: "Gado-Gado Lengkap", calories: 320, carbs: 35, protein: 15, fat: 14, fiber: 12 },
+                snackSore: { name: "Kacang Almond", calories: 160, carbs: 6, protein: 6, fat: 14, fiber: 3 },
+                makanMalam: { name: "Ikan Bakar Bumbu Kuning + Nasi Merah", calories: 435, carbs: 45, protein: 35, fat: 12, fiber: 5 }
+            },
+            2000: {
+                sarapan: { name: "Bubur Ayam Sehat", calories: 400, carbs: 60, protein: 20, fat: 10, fiber: 6 },
+                snackPagi: { name: "Pepaya", calories: 120, carbs: 30, protein: 2, fat: 0.5, fiber: 5 },
+                makanSiang: { name: "Rendang Daging + Nasi Merah + Lalapan", calories: 550, carbs: 55, protein: 35, fat: 20, fiber: 8 },
+                snackSore: { name: "Salad Buah", calories: 150, carbs: 30, protein: 2, fat: 3, fiber: 4 },
+                makanMalam: { name: "Ikan Bakar + Tumis Kangkung + Nasi Merah", calories: 480, carbs: 50, protein: 35, fat: 15, fiber: 7 }
+            }
+        };
+
+        // Fungsi kalkulator nutrisi
+        function calculateNutrition() {
+            // Ambil nilai dari form
+            const gender = document.getElementById('gender').value;
+            const age = parseInt(document.getElementById('age').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseInt(document.getElementById('height').value);
+            const activity = parseFloat(document.getElementById('activity').value);
+            const goal = document.getElementById('goal').value;
+            
+            // Validasi input
+            if (!gender || !age || !weight || !height || !activity || !goal) {
+                alert('Harap lengkapi semua data!');
+                return;
+            }
+            
+            // Hitung BMR menggunakan rumus Mifflin-St Jeor
+            let bmr;
+            if (gender === 'male') {
+                bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+            } else {
+                bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+            }
+            
+            // Hitung TDEE (Total Daily Energy Expenditure)
+            let tdee = bmr * activity;
+            
+            // Sesuaikan dengan tujuan diet
+            if (goal === 'loss') {
+                tdee -= 500; // Defisit 500 kalori untuk penurunan berat badan
+            } else if (goal === 'gain') {
+                tdee += 500; // Surplus 500 kalori untuk penambahan berat badan
+            }
+            
+            // Hitung kebutuhan makronutrien
+            // Protein: 1.6-2.2g per kg berat badan
+            const proteinGrams = Math.round(weight * 1.8);
+            const proteinCalories = proteinGrams * 4;
+            
+            // Lemak: 20-35% dari TDEE
+            const fatCalories = tdee * 0.25;
+            const fatGrams = Math.round(fatCalories / 9);
+            
+            // Karbohidrat: sisanya
+            const carbsCalories = tdee - proteinCalories - fatCalories;
+            const carbsGrams = Math.round(carbsCalories / 4);
+            
+            // Serat: 14g per 1000 kalori
+            const fiberGrams = Math.round((tdee / 1000) * 14);
+            
+            // Hitung kebutuhan mineral berdasarkan usia dan gender
+            let calcium, iron, magnesium, potassium, zinc, sodium;
+            
+            if (gender === 'male') {
+                calcium = age < 50 ? 1000 : 1200;
+                iron = age < 19 ? 11 : 8;
+                magnesium = age < 31 ? 400 : 420;
+                potassium = 3400;
+                zinc = age < 19 ? 11 : 11;
+                sodium = 2300;
+            } else {
+                calcium = age < 50 ? 1000 : 1200;
+                iron = age < 51 ? 18 : 8;
+                magnesium = age < 31 ? 310 : 320;
+                potassium = 2600;
+                zinc = age < 19 ? 9 : 8;
+                sodium = 2300;
+            }
+            
+            // Tampilkan hasil
+            document.getElementById('bmrResult').textContent = Math.round(bmr);
+            document.getElementById('tdeeResult').textContent = Math.round(tdee);
+            
+            document.getElementById('carbsResult').textContent = carbsGrams + ' g';
+            document.getElementById('proteinResult').textContent = proteinGrams + ' g';
+            document.getElementById('fatResult').textContent = fatGrams + ' g';
+            document.getElementById('fiberResult').textContent = fiberGrams + ' g';
+            
+            document.getElementById('calciumResult').textContent = calcium + ' mg';
+            document.getElementById('ironResult').textContent = iron + ' mg';
+            document.getElementById('magnesiumResult').textContent = magnesium + ' mg';
+            document.getElementById('potassiumResult').textContent = potassium + ' mg';
+            document.getElementById('zincResult').textContent = zinc + ' mg';
+            document.getElementById('sodiumResult').textContent = sodium + ' mg';
+            
+            // Update progress bars
+            document.getElementById('carbsProgress').style.width = '50%';
+            document.getElementById('proteinProgress').style.width = '30%';
+            document.getElementById('fatProgress').style.width = '20%';
+            document.getElementById('fiberProgress').style.width = '70%';
+            
+            // Tampilkan hasil
+            document.getElementById('results').classList.add('active');
+            document.getElementById('initialMessage').style.display = 'none';
+            
+            // Update rencana makan berdasarkan TDEE
+            updateMealPlanBasedOnTDEE(Math.round(tdee));
+        }
+
+        // Fungsi untuk update rencana makan berdasarkan TDEE
+        function updateMealPlanBasedOnTDEE(tdee) {
+            const options = [1200, 1500, 2000];
+            const closest = options.reduce((prev, curr) => {
+                return (Math.abs(curr - tdee) < Math.abs(prev - tdee) ? curr : prev);
+            });
+            
+            document.getElementById('calorieTargetSelect').value = closest;
+            displayMealPlan(closest);
+        }
+
+        // Fungsi untuk menampilkan rencana makan
+        function displayMealPlan(calorieTarget) {
+            const mealPlanContainer = document.getElementById('customMealPlan');
+            const plan = mealPlans[calorieTarget];
+            
+            if (!plan) {
+                mealPlanContainer.innerHTML = '<p>Rencana makan untuk target kalori ini belum tersedia.</p>';
+                return;
+            }
+            
+            const mealTimes = [
+                { key: 'sarapan', title: 'Sarapan', icon: 'fas fa-sun', time: '07:00' },
+                { key: 'snackPagi', title: 'Snack Pagi', icon: 'fas fa-apple-alt', time: '10:00' },
+                { key: 'makanSiang', title: 'Makan Siang', icon: 'fas fa-utensils', time: '13:00' },
+                { key: 'snackSore', title: 'Snack Sore', icon: 'fas fa-carrot', time: '16:00' },
+                { key: 'makanMalam', title: 'Makan Malam', icon: 'fas fa-moon', time: '19:00' }
+            ];
+            
+            let html = '';
+            mealTimes.forEach(mealTime => {
+                const meal = plan[mealTime.key];
+                html += `
+                    <div class="meal-time-card">
+                        <div class="meal-time-header">
+                            <div class="meal-time-title">
+                                <i class="${mealTime.icon}"></i>
+                                ${mealTime.title} (${mealTime.time})
+                            </div>
+                            <div class="meal-time-calories">${meal.calories} kal</div>
+                        </div>
+                        <ul class="meal-items">
+                            <li>${meal.name}</li>
+                            <li class="nutrient-info">
+                                Karbohidrat: ${meal.carbs}g | Protein: ${meal.protein}g | Lemak: ${meal.fat}g | Serat: ${meal.fiber}g
+                            </li>
+                        </ul>
+                    </div>
+                `;
+            });
+            
+            // Total harian
+            const totalCalories = Object.values(plan).reduce((sum, meal) => sum + meal.calories, 0);
+            const totalCarbs = Object.values(plan).reduce((sum, meal) => sum + meal.carbs, 0);
+            const totalProtein = Object.values(plan).reduce((sum, meal) => sum + meal.protein, 0);
+            const totalFat = Object.values(plan).reduce((sum, meal) => sum + meal.fat, 0);
+            const totalFiber = Object.values(plan).reduce((sum, meal) => sum + meal.fiber, 0);
+            
+            html += `
+                <div class="meal-time-card" style="border-left-color: var(--accent); grid-column: 1 / -1;">
+                    <div class="meal-time-header">
+                        <div class="meal-time-title">
+                            <i class="fas fa-chart-bar"></i>
+                            Total Harian
+                        </div>
+                        <div class="meal-time-calories">${totalCalories} kal</div>
+                    </div>
+                    <ul class="meal-items">
+                        <li>Total Karbohidrat: <strong>${totalCarbs}g</strong></li>
+                        <li>Total Protein: <strong>${totalProtein}g</strong></li>
+                        <li>Total Lemak: <strong>${totalFat}g</strong></li>
+                        <li>Total Serat: <strong>${totalFiber}g</strong></li>
+                    </ul>
+                </div>
+            `;
+            
+            mealPlanContainer.innerHTML = html;
+        }
+
+        // Fungsi untuk menampilkan resep
+        function displayRecipes() {
+            const recipeGrid = document.getElementById('recipeGrid');
+            
+            let html = '';
+            recipeDatabase.forEach(recipe => {
+                html += `
+                    <div class="recipe-card">
+                        <div class="recipe-img">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="recipe-content">
+                            <div class="recipe-title">${recipe.name}</div>
+                            <div class="recipe-meta">
+                                <span><i class="fas fa-clock"></i> ${recipe.cookTime} menit</span>
+                                <span class="recipe-calories">${recipe.calories} kalori</span>
+                            </div>
+                            <p class="recipe-description">${recipe.description}</p>
+                            <div class="recipe-tags">
+                                <span class="tag">${recipe.category}</span>
+                                <span class="tag">${recipe.difficulty}</span>
+                                <span class="tag">${recipe.servings} porsi</span>
+                            </div>
+                            <button class="btn btn-block view-recipe-btn" data-id="${recipe.id}">
+                                Lihat Resep Lengkap
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            recipeGrid.innerHTML = html;
+            
+            // Tambahkan event listener untuk tombol lihat resep
+            document.querySelectorAll('.view-recipe-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const recipeId = parseInt(this.getAttribute('data-id'));
+                    showRecipeDetail(recipeId);
+                });
+            });
+        }
+
+        // Fungsi untuk menampilkan detail resep
+        function showRecipeDetail(recipeId) {
+            const recipe = recipeDatabase.find(r => r.id === recipeId);
+            if (!recipe) return;
+            
+            const modal = document.getElementById('recipeModal');
+            const content = document.getElementById('recipeDetailContent');
+            
+            let ingredientsHtml = '';
+            recipe.ingredients.forEach(ingredient => {
+                ingredientsHtml += `
+                    <li>
+                        <span>${ingredient.name}</span>
+                        <span>${ingredient.amount} ${ingredient.unit}</span>
+                    </li>
+                `;
+            });
+            
+            let instructionsHtml = '';
+            recipe.instructions.forEach(instruction => {
+                instructionsHtml += `<li>${instruction}</li>`;
+            });
+            
+            content.innerHTML = `
+                <div class="recipe-detail-header">
+                    <div class="recipe-detail-img">
+                        <i class="fas fa-utensils" style="font-size: 4rem;"></i>
+                    </div>
+                    <div class="recipe-detail-info">
+                        <h2 class="recipe-detail-title">${recipe.name}</h2>
+                        <div class="recipe-detail-meta">
+                            <div class="recipe-meta-item">
+                                <i class="fas fa-clock"></i> ${recipe.cookTime} menit
+                            </div>
+                            <div class="recipe-meta-item">
+                                <i class="fas fa-user"></i> ${recipe.servings} porsi
+                            </div>
+                            <div class="recipe-meta-item">
+                                <i class="fas fa-fire"></i> ${recipe.calories} kalori/porsi
+                            </div>
+                        </div>
+                        <div class="recipe-tags">
+                            <span class="tag">${recipe.category}</span>
+                            <span class="tag">${recipe.difficulty}</span>
+                            <span class="tag">Karbohidrat: ${recipe.carbs}g</span>
+                            <span class="tag">Protein: ${recipe.protein}g</span>
+                            <span class="tag">Lemak: ${recipe.fat}g</span>
+                            <span class="tag">Serat: ${recipe.fiber}g</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recipe-detail-content">
+                    <div class="recipe-section">
+                        <h3 class="section-title"><i class="fas fa-shopping-basket"></i> Bahan-bahan</h3>
+                        <ul class="ingredients-list">
+                            ${ingredientsHtml}
+                        </ul>
+                    </div>
+                    
+                    <div class="recipe-section">
+                        <h3 class="section-title"><i class="fas fa-list-ol"></i> Cara Membuat</h3>
+                        <ol class="instructions-list">
+                            ${instructionsHtml}
+                        </ol>
+                    </div>
+                </div>
+                
+                ${recipe.tips ? `
+                <div class="recipe-tips">
+                    <strong><i class="fas fa-lightbulb"></i> Tips:</strong> ${recipe.tips}
+                </div>
+                ` : ''}
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        // Event Listeners
+        document.getElementById('nutritionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateNutrition();
+        });
+
+        document.getElementById('updateMealPlanBtn').addEventListener('click', function() {
+            const calorieTarget = document.getElementById('calorieTargetSelect').value;
+            displayMealPlan(calorieTarget);
+        });
+
+        document.getElementById('closeRecipeModal').addEventListener('click', function() {
+            document.getElementById('recipeModal').style.display = 'none';
+        });
+
+        // Tutup modal ketika klik di luar konten
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('recipeModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Inisialisasi
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tampilkan rencana makan default
+            displayMealPlan(2000);
+            
+            // Tampilkan resep
+            displayRecipes();
+        });
+    </script>
+</body>
+</html>
